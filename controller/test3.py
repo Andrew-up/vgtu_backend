@@ -8,22 +8,19 @@ from model.model import Patient_model_back
 from service.patientService import PatientService
 
 API_ROOT = '/api/'
+SECRET_KEY = 'hFGHFEFyr67ggghhPJhdfh123dd'
 
 
 @app.route(API_ROOT + "/all/")
-def hello_world22():
-    start = time.time()
+def get_patients():
     p = PatientService(1)
     zzz = p.getAll()
     json_string = json.dumps([ob.__dict__ for ob in zzz], ensure_ascii=False)
-    roundtrip = time.time() - start
-    print(f'roundtrip: {roundtrip}')
     return json_string
 
 
 @app.route(API_ROOT + 'patient/<id>/')
 def get_patient_by_id(id):
-    print(id)
     s_service = PatientService(1)
     p = s_service.getById(id)
     json_string = json.dumps(p.__dict__, ensure_ascii=False)
@@ -33,15 +30,22 @@ def get_patient_by_id(id):
 @app.route(API_ROOT + "/add/", methods=['POST'])
 def add_new_patient():
     data1: PatientDTO.__dict__ = request.json
-    s = PatientDTO(**data1)
-    patient: Patient_model_back = getPatient(s)
+    dto = PatientDTO(**data1)
+    s_service = PatientService(1)
+    res = s_service.add(dto)
+    print(res.address)
+    json_string = json.dumps(res.__dict__, ensure_ascii=False)
+    return Response(json_string, 200)
 
-    # getPatient(data)
 
-    # x = json.loads(data)
-    # print(x)
-    # print(x.id_patient)
-    # p = PatientService(1)
-    # zzz = p.add()
-    # json_string = json.dumps([ob.__dict__ for ob in zzz], ensure_ascii=False)
-    return Response('OK', 200)
+@app.route(API_ROOT + 'patient/delete/<id>', methods=['POST', 'GET'])
+def delete_patient(id):
+    if request.method == 'POST':
+        r = request.json
+        if r['key'] == SECRET_KEY:
+            print('delete')
+            srvise = PatientService(1)
+            res = srvise.deletePatientById(id_patient=id)
+            return Response(res, 200)
+    else:
+        return Response('Ошибка доступа', 401)

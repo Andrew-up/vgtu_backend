@@ -19,12 +19,10 @@ class PatientService(object):
         return listdto
 
     def add(self, patient_dto: PatientDTO):
-
         patient: Patient_model_back = getPatient(patient_dto)
         repo = PatientRepository(self.doctor)
         new_patient = repo.add(patient)
         patient_new_DTO = getPatientDTO(new_patient)
-
         return patient_new_DTO
 
     def deletePatientById(self, id_patient):
