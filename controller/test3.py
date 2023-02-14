@@ -1,20 +1,47 @@
 import json
+import os
 import time
 
-from flask import request, Response
+from flask import request, Response, send_from_directory
 from controller import app
 from dto.patientDTO import PatientDTO, getPatient
 from model.model import Patient_model_back
 from service.patientService import PatientService
+from definitions import RELEASE_DIR, VERSION
+import logging
+
+# logger2 = logging.basicConfig(level=logging.WARNING)
+logger2 = logging.getLogger('test1')
+logger2.setLevel(level=logging.DEBUG)
+
+
+file = logging.FileHandler('test1.log')
+basic_format_left = logging.Formatter('%(asctime)s : [%(levelname)s] : %(message)s IP-CLIENT: %(ip_client)-15s url: %(url)-100s')
+file.setFormatter(basic_format_left)
+logger2.addHandler(file)
+# logger.set
+
+for kei in logging.Logger.manager.loggerDict:
+    print(kei)
+
 
 API_ROOT = '/api/'
 SECRET_KEY = 'hFGHFEFyr67ggghhPJhdfh123dd'
 
+testssss = {
+    'ip_client': None,
+    'url': None
+}
 
 @app.route(API_ROOT + "/all/")
 def get_patients():
     p = PatientService(1)
     zzz = p.getAll()
+    remote_addr = request
+    testssss['ip_client'] = remote_addr.remote_addr
+    testssss['url'] = remote_addr.path
+    print(testssss)
+    logger2.debug(f'test', extra=testssss)
     json_string = json.dumps([ob.__dict__ for ob in zzz], ensure_ascii=False)
     return json_string
 
@@ -25,6 +52,30 @@ def get_patient_by_id(id):
     p = s_service.getById(id)
     json_string = json.dumps(p.__dict__, ensure_ascii=False)
     return Response(json_string, status=200)
+
+
+@app.route('/api/app/version/')
+def check_version():
+    # logger2.debug(f'test: {VERSION}')
+    # print(request)
+    remote_addr = request
+    testssss['ip_client'] = remote_addr.remote_addr
+    testssss['url'] = remote_addr.path
+    # print(remote_addr)
+    print(testssss)
+    logger2.debug(f'test', extra=testssss)
+    print(VERSION)
+    return Response(VERSION, status=200)
+
+
+@app.route('/api/app/update/download/')
+def download():
+    with open(os.path.join(RELEASE_DIR, 'test.zip'), 'rb') as f:
+        data = f.readlines()
+        return Response(data, headers={
+            'Content-Type': 'application/zip',
+            'Content-Disposition': 'attachment; filename=update.zip;'}
+            )
 
 
 @app.route(API_ROOT + "/add/", methods=['POST'])
