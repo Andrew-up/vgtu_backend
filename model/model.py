@@ -32,18 +32,38 @@ class Patient_model_back(Base):
     photo = Column(BLOB)
 
 
-# Child Patient->history
-# История лечения пациента
+#Результат распознавания нейронной сети
+class ResultPredict(Base):
+    __tablename__ = 'Result_predict'
+    id_category = Column(Integer, primary_key=True)
+    name_category = Column(String(50))
+    history_neural_network = relationship("HistoryNeuralNetwork", back_populates="result_predict", uselist=False)
 
+#История распознавания нейронной сети
+class HistoryNeuralNetwork(Base):
+    __tablename__ = 'History_neural_network'
+    id_history_neural_network = Column(Integer, primary_key=True)
+    photo_original = Column(BLOB)
+    photo_predict = Column(BLOB)
+    photo_predict_edit_doctor = Column(BLOB)
+    polygon_mask = Column(BLOB)
+    result_predict_id = Column(Integer, ForeignKey(ResultPredict.id_category))
+    result_predict = relationship(ResultPredict, back_populates="history_neural_network", uselist=False)
+    healing_history_id = relationship("HealingHistory", back_populates="healing_history", uselist=False)
+
+#История лечения пациента
 class HealingHistory(Base):
     __tablename__ = 'Healing_history'
     id_healing_history = Column(Integer, primary_key=True)
     patient_id = Column(Integer, ForeignKey(Patient_model_back.id_patient))
+    history_neural_network_id = Column(Integer, ForeignKey(HistoryNeuralNetwork.id_history_neural_network))
+    healing_history = relationship(HistoryNeuralNetwork, back_populates="healing_history_id")
     patient = relationship(Patient_model_back, back_populates="history")
+
     doctor = relationship("Doctor", back_populates="healing_history", uselist=False)
     comment = Column(String(500))
     date = Column(String(500))
-    photo = Column(BLOB)
+
 
 # Профиль доктора
 class Doctor(Base):
