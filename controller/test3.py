@@ -5,7 +5,7 @@ import time
 from flask import request, Response, send_from_directory
 from controller import app
 from dto.patientDTO import PatientDTO, getPatient
-from model.model import Patient_model_back
+from model.model import Patient
 from service.patientService import PatientService
 from definitions import RELEASE_DIR, VERSION
 import logging

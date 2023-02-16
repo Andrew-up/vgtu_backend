@@ -1,4 +1,4 @@
-from model.model import Patient_model_back
+from model.model import Patient
 
 class PatientDTO(object):
 
@@ -18,7 +18,7 @@ class PatientDTO(object):
 
 # Передать PatientDTO получить Patient
 def getPatient(patient_dto_back: PatientDTO):
-    p = Patient_model_back()
+    p = Patient()
     p.firstname = patient_dto_back.firstname
     p.surname = patient_dto_back.last_name
     p.middlename = patient_dto_back.middle_name
@@ -37,7 +37,7 @@ def getPatient(patient_dto_back: PatientDTO):
 # patient = Patient_model_back()
 # res = dto.getPatientDTO(patient)
 
-def getPatientDTO(patient_model_back: Patient_model_back):
+def getPatientDTO(patient_model_back: Patient):
     p_dto = PatientDTO()
     p_dto.id_patient = patient_model_back.id_patient
     p_dto.firstname = patient_model_back.firstname
@@ -53,7 +53,7 @@ def getPatientDTO(patient_model_back: Patient_model_back):
     return p_dto
 
 
-def getPatientDTO_list(patient_model_back: list[Patient_model_back]) -> list[PatientDTO]:
+def getPatientDTO_list(patient_model_back: list[Patient]) -> list[PatientDTO]:
     dto_list = list[PatientDTO]()
     for i in range(len(patient_model_back)):
         dto = PatientDTO()

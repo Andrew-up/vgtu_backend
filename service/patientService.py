@@ -1,5 +1,5 @@
 from repository.PatientRepository import PatientRepository
-from model.model import Patient_model_back
+from model.model import Patient
 from dto.patientDTO import PatientDTO, getPatientDTO_list, getPatient, getPatientDTO
 
 class PatientService(object):
@@ -7,7 +7,7 @@ class PatientService(object):
     def __init__(self, doctor_id):
         self.doctor = doctor_id
 
-    def getById(self, item_id) -> Patient_model_back:
+    def getById(self, item_id) -> Patient:
         repo = PatientRepository(self.doctor)
         dto = getPatientDTO(repo.get(item_id))
         return dto
@@ -19,7 +19,7 @@ class PatientService(object):
         return listdto
 
     def add(self, patient_dto: PatientDTO):
-        patient: Patient_model_back = getPatient(patient_dto)
+        patient: Patient = getPatient(patient_dto)
         repo = PatientRepository(self.doctor)
         new_patient = repo.add(patient)
         patient_new_DTO = getPatientDTO(new_patient)
@@ -29,6 +29,8 @@ class PatientService(object):
         repo = PatientRepository(self.doctor)
         result_delete = repo.delete_by_id(id_patient=id_patient)
         return result_delete
+
+    # def add
 
 
 if __name__ == '__main__':

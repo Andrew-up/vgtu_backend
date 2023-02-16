@@ -11,7 +11,7 @@ Base = declarative_base()
 # 1. подумать как хранить таблицы в разных файлах
 
 # Таблица пациента
-class Patient_model_back(Base):
+class Patient(Base):
     __tablename__ = 'Patient'
     id_patient = Column(Integer, primary_key=True)
     firstname = Column(String(250))
@@ -27,8 +27,8 @@ class Patient_model_back(Base):
     dianosis = Column(String(250))
     date_healing_start = Column(String(250))
     date_healing_end = Column(String(250))
-    history = relationship("HealingHistory", back_populates="patient")
-    doctor = relationship("Doctor", back_populates="patient", uselist=False)
+    history: list["HealingHistory"] = relationship("HealingHistory", back_populates="patient", cascade="all,delete")
+    doctor: "Doctor" = relationship("Doctor", back_populates="patient", uselist=False)
     photo = Column(BLOB)
 
 
@@ -36,7 +36,8 @@ class Patient_model_back(Base):
 class ResultPredict(Base):
     __tablename__ = 'Result_predict'
     id_category = Column(Integer, primary_key=True)
-    name_category = Column(String(50))
+    name_category_eng = Column(String(50))
+    name_category_ru = Column(String(50))
     history_neural_network = relationship("HistoryNeuralNetwork", back_populates="result_predict", uselist=False)
 
 #История распознавания нейронной сети
@@ -55,14 +56,13 @@ class HistoryNeuralNetwork(Base):
 class HealingHistory(Base):
     __tablename__ = 'Healing_history'
     id_healing_history = Column(Integer, primary_key=True)
-    patient_id = Column(Integer, ForeignKey(Patient_model_back.id_patient))
+    patient_id = Column(Integer, ForeignKey(Patient.id_patient))
     history_neural_network_id = Column(Integer, ForeignKey(HistoryNeuralNetwork.id_history_neural_network))
     healing_history = relationship(HistoryNeuralNetwork, back_populates="healing_history_id")
-    patient = relationship(Patient_model_back, back_populates="history")
-
+    patient = relationship(Patient, back_populates="history")
     doctor = relationship("Doctor", back_populates="healing_history", uselist=False)
     comment = Column(String(500))
-    date = Column(String(500))
+    date = Column(String(100))
 
 
 # Профиль доктора
@@ -73,8 +73,8 @@ class Doctor(Base):
     surname = Column(String(250))
     middlename = Column(String(250))
     photo = Column(BLOB)
-    patient_id = Column(Integer, ForeignKey(Patient_model_back.id_patient))
-    patient = relationship(Patient_model_back, back_populates="doctor")
+    patient_id = Column(Integer, ForeignKey(Patient.id_patient))
+    patient = relationship(Patient, back_populates="doctor")
     healing_history_id = Column(Integer, ForeignKey(HealingHistory.id_healing_history))
     healing_history = relationship(HealingHistory, back_populates="doctor")
 
