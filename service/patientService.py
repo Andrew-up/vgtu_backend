@@ -1,5 +1,5 @@
 from repository.PatientRepository import PatientRepository
-from model.model import Patient
+from model.model import Patient, HealingHistory
 from dto.patientDTO import PatientDTO, getPatientDTO_list, getPatient, getPatientDTO
 
 class PatientService(object):
@@ -30,7 +30,10 @@ class PatientService(object):
         result_delete = repo.delete_by_id(id_patient=id_patient)
         return result_delete
 
-    # def add
+    def addHealingHistoryPatient(self, history: HealingHistory):
+        repo = PatientRepository(self.doctor)
+        new_history = repo.addHealingHistoryPatient(history)
+        return new_history
 
 
 if __name__ == '__main__':

@@ -1,22 +1,21 @@
 import json
-import os
-import time
-
-from flask import request, Response, send_from_directory
-from controller import app
-from dto.patientDTO import PatientDTO, getPatient
-from model.model import Patient
-from service.patientService import PatientService
-from definitions import RELEASE_DIR, VERSION
 import logging
+import os
+
+from flask import request, Response
+
+from controller import app, API_ROOT
+from definitions import RELEASE_DIR, VERSION
+from dto.patientDTO import PatientDTO
+from service.patientService import PatientService
 
 # logger2 = logging.basicConfig(level=logging.WARNING)
 logger2 = logging.getLogger('test1')
 logger2.setLevel(level=logging.DEBUG)
 
-
 file = logging.FileHandler('test1.log')
-basic_format_left = logging.Formatter('%(asctime)s : [%(levelname)s] : %(message)s IP-CLIENT: %(ip_client)-15s url: %(url)-100s')
+basic_format_left = logging.Formatter(
+    '%(asctime)s : [%(levelname)s] : %(message)s IP-CLIENT: %(ip_client)-15s url: %(url)-100s')
 file.setFormatter(basic_format_left)
 logger2.addHandler(file)
 # logger.set
@@ -24,14 +23,13 @@ logger2.addHandler(file)
 for kei in logging.Logger.manager.loggerDict:
     print(kei)
 
-
-API_ROOT = '/api/'
 SECRET_KEY = 'hFGHFEFyr67ggghhPJhdfh123dd'
 
 testssss = {
     'ip_client': None,
     'url': None
 }
+
 
 @app.route(API_ROOT + "/all/")
 def get_patients():
@@ -75,7 +73,7 @@ def download():
         return Response(data, headers={
             'Content-Type': 'application/zip',
             'Content-Disposition': 'attachment; filename=update.zip;'}
-            )
+                        )
 
 
 @app.route(API_ROOT + "/add/", methods=['POST'])

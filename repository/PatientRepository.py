@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, sessionmaker, joinedload, Load, lazyload
 from sqlalchemy import create_engine
 
-from model.model import Patient, HealingHistory
+from model.model import Patient, HealingHistory, ResultPredict
 from repository.abstractRepository import AbstractRepository
 from definitions import DATABASE_DIR
 
@@ -38,16 +38,14 @@ class PatientRepository(AbstractRepository):
         self.session.close()
         return self.session.query(Patient).get(data.id_patient)
 
-    def addHealingHistoryPatient(self, patient_id: int, healing_history: HealingHistory):
+    def addHealingHistoryPatient(self, healing_history: HealingHistory):
         self.session.connection()
-        patient: Patient = self.session.query(Patient).get(patient_id)
+        patient: Patient = self.session.query(Patient).get(healing_history.patient_id)
         patient.history.append(healing_history)
         self.session.commit()
         self.session.refresh(patient)
-        # for i in patient.history:
-        #     print(i.id_healing_history)
         self.session.close()
-        return f'Добавлена новая история для:  {patient.id_patient}'
+        return f'Добавлена новая история для: {patient.id_patient}'
 
     # def addHistoryNeuralNetwork(self):
 
