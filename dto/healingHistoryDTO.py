@@ -23,6 +23,7 @@ class HealingHistoryDTO(object):
         h.comment = self.comment
         h.doctor = self.doctor
         h.history_neural_network_id = self.history_neural_network_id
+        h.date = self.date
         if self.history_neutral_network is not None:
             h.history_neutral_network = HistoryNeutralNetworkDTO(**self.history_neutral_network).getHistoryNeutralNetwork()
         return h

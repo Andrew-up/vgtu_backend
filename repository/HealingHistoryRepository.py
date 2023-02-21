@@ -17,9 +17,15 @@ class HealingHistoryRepository(AbstractRepository):
 
     def get(self, id_history) -> HealingHistory:
         self.session.connection()
-        get: HealingHistory = self.session.query(HealingHistory).get(id_history)
+        history: HealingHistory = self.session.query(HealingHistory).filter(
+            HealingHistory.id_healing_history == id_history) \
+            .join(HistoryNeuralNetwork, isouter=True) \
+            .join(ResultPredict, isouter=True) \
+            .options(
+            joinedload(HealingHistory.history_neutral_network).subqueryload(HistoryNeuralNetwork.result_predict)).first()
+        # get: HealingHistory = self.session.query(HealingHistory).get(id_history)
         self.session.close()
-        return get
+        return history
 
     def add(self, data: HealingHistory):
         self.session.connection()

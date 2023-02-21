@@ -7,7 +7,7 @@ from dto import healingHistoryDTO
 from service.patientService import PatientService
 
 
-@app.route(API_ROOT + 'history/<id_patient>/')
+@app.route(API_ROOT + 'patient/history/<id_patient>/')
 def getAllHistoryByPatientId(id_patient):
     print('1')
     s = HealingHistoryService(1)
@@ -24,11 +24,22 @@ def add_history_patient(id_patient):
     data: HealingHistory.__dict__ = request.json
     history = healingHistoryDTO.HealingHistoryDTO(**data).getHealingHistory()
     service = PatientService(1)
-    print(history)
+    # print(history)
     service.addHealingHistoryPatient(history)
-    print(data)
+    # print(data)
     # res = service.addHealingHistoryPatient(data)
     # print(res)
     return Response('1', status=200)
+
+@app.route(API_ROOT + 'history/<id_history>/')
+def get_history_by_history_id(id_history):
+    s = HealingHistoryService(1)
+    res: HealingHistory = s.getHistoryById(id_history)
+    h: healingHistoryDTO.HealingHistoryDTO = healingHistoryDTO.HealingHistoryDTO(**res.__dict__).getDto().__dict__
+    return Response(json.dumps(h), status=200,
+                    headers={'Content-Type': 'application/json'})
+
+
+
 
 

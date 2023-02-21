@@ -7,6 +7,9 @@ class HealingHistoryService(object):
     def getAllHistoryByIdPatient(self, id_patient):
         h = HealingHistoryRepository(self.doctor)
         return h.getAllHistoryByPatientId(id_patient)
+    def getHistoryById(self, id_history):
+        h = HealingHistoryRepository(self.doctor)
+        return h.get(id_history)
 
 
 if __name__ == '__main__':
