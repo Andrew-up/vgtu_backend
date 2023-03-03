@@ -7,6 +7,7 @@ class ResultPredictDTO(object):
         self.id_category = None
         self.name_category_eng = None
         self.name_category_ru = None
+        self.color = None
         self.__dict__.update(entries)
 
     def getResultPredict(self):
@@ -21,4 +22,5 @@ class ResultPredictDTO(object):
         dto.id_category = self.id_category
         dto.name_category_eng = self.name_category_eng
         dto.name_category_ru = self.name_category_ru
+        dto.color = self.color
         return dto

@@ -52,7 +52,7 @@ class PatientRepository(AbstractRepository):
 
     def find_all(self):
         self.session.connection()
-        all = self.session.query(Patient).all()
+        all = self.session.query(Patient).all().copy()
         self.session.close()
         return all
 

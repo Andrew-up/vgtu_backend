@@ -14,6 +14,7 @@ class HistoryNeutralNetworkDTO(object):
         self.polygon_mask = None
         self.result_predict = None
         self.result_predict_id = None
+        self.area_wound = None
         self.__dict__.update(entries)
 
 
@@ -30,6 +31,8 @@ class HistoryNeutralNetworkDTO(object):
             h.polygon_mask = self.polygon_mask.encode('utf-8')
         if self.result_predict_id is not None:
             h.result_predict_id = self.result_predict_id
+        if self.area_wound is not None and self.area_wound > 0:
+            h.area_wound = self.area_wound
         return h
 
     def getDto(self):
@@ -45,6 +48,8 @@ class HistoryNeutralNetworkDTO(object):
             dto.photo_predict_edit_doctor = self.photo_predict_edit_doctor.decode('utf-8')
         if self.polygon_mask is not None:
             dto.polygon_mask = self.polygon_mask.decode('utf-8')
+        if self.area_wound is not None and self.area_wound > 0:
+            dto.area_wound = self.area_wound
         del dto.result_predict_id
         return dto
 

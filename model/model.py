@@ -39,6 +39,7 @@ class ResultPredict(Base):
     name_category_eng = Column(String(50))
     name_category_ru = Column(String(50))
     history_neural_network = relationship("HistoryNeuralNetwork", back_populates="result_predict", uselist=False)
+    color = Column(String(50))
 
 #История распознавания нейронной сети
 
@@ -53,6 +54,7 @@ class HistoryNeuralNetwork(Base):
     result_predict = relationship(ResultPredict, back_populates="history_neural_network", uselist=False)
     # healing_history_id = Column(Integer, ForeignKey("HealingHistory"."id_healing_history"))
     healing_history = relationship("HealingHistory", back_populates="history_neutral_network", uselist=False)
+    area_wound = Column(Integer)
 
 #История лечения пациента
 class HealingHistory(Base):

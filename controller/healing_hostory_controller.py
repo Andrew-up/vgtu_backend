@@ -29,7 +29,7 @@ def add_history_patient(id_patient):
     # print(data)
     # res = service.addHealingHistoryPatient(data)
     # print(res)
-    return Response('1', status=200)
+    return Response('История добавлена', status=200)
 
 @app.route(API_ROOT + 'history/<id_history>/')
 def get_history_by_history_id(id_history):
