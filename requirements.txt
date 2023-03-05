@@ -4,3 +4,4 @@ Paste~=3.5.2
 Flask~=2.2.2
 SQLAlchemy==1.4.44
 Werkzeug~=2.2.2
+Pillow==9.4.0

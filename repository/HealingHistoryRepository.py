@@ -46,11 +46,23 @@ class HealingHistoryRepository(AbstractRepository):
         return all_history_patient
 
 
+    def getImageDataset(self):
+        self.session.connection()
+        dataset = self.session.query(HistoryNeuralNetwork).filter(HistoryNeuralNetwork.photo_predict_edit_doctor != None)\
+            .join(ResultPredict, isouter=True).options(joinedload(HistoryNeuralNetwork.result_predict)).all()
+        self.session.close()
+        return dataset
+
+
 if __name__ == '__main__':
     r = HealingHistoryRepository(1)
+    for i in r.getImageDataset():
+        # print(i.id_history_neural_network)
+        print(i.result_predict)
+    # print(r.hfhjgsdfjsdgf())
     # r.getAllHistoryByPatientId(5)
-    for i in r.getAllHistoryByPatientId(5):
-        print(i.history_neutral_network.result_predict.name_category_ru)
+    # for i in r.getAllHistoryByPatientId(5):
+    #     print(i.history_neutral_network.result_predict.name_category_ru)
 
     # print(len(r.getAllHistoryByPatientId(5)))
     # print(r.get(1).comment)
