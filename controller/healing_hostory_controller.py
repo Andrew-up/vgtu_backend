@@ -26,7 +26,7 @@ def add_history_patient(id_patient):
     service = PatientService(1)
     # print(history)
     service.addHealingHistoryPatient(history)
-    # print(data)
+    print(data)
     # res = service.addHealingHistoryPatient(data)
     # print(res)
     return Response('История добавлена', status=200)
@@ -34,13 +34,11 @@ def add_history_patient(id_patient):
 @app.route(API_ROOT + 'history/<id_history>/')
 def get_history_by_history_id(id_history):
     s = HealingHistoryService(1)
-    h = {'history': None}
+    h = healingHistoryDTO.HealingHistoryDTO(**HealingHistory().__dict__).getDto().__dict__
     res: HealingHistory = s.getHistoryById(id_history)
-    print(res)
-    if res:
-        print('11111111111111111111111')
-        h: healingHistoryDTO.HealingHistoryDTO = healingHistoryDTO.HealingHistoryDTO(**res.__dict__).getDto()
-    return Response(json.dumps(h), status=200,
+    if res is not None:
+        h: healingHistoryDTO.HealingHistoryDTO = healingHistoryDTO.HealingHistoryDTO(**res.__dict__).getDto().__dict__
+    return Response(json.dumps(h, ensure_ascii=False), status=200,
                     headers={'Content-Type': 'application/json'})
 
 

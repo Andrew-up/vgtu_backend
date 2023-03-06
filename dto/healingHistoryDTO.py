@@ -7,22 +7,22 @@ from dto.HistoryNeutralNetworkDTO import HistoryNeutralNetworkDTO
 class HealingHistoryDTO(object):
 
     def __init__(self, **entries):
-        self.id_healing_history = None
-        self.patient_id = None
-        self.comment = None
-        self.date = None
-        self.history_neural_network_id = None
+        self.id_healing_history: int = int()
+        self.patient_id: int = int()
+        self.comment: str = str()
+        self.date: str = str()
+        self.history_neural_network_id: int = int()
         self.doctor = None
         self.history_neutral_network = None
         self.__dict__.update(entries)
 
     def getHealingHistory(self):
         h = HealingHistory()
-        h.id_healing_history = self.id_healing_history
+        # h.id_healing_history = self.id_healing_history
         h.patient_id = self.patient_id
         h.comment = self.comment
         h.doctor = self.doctor
-        h.history_neural_network_id = self.history_neural_network_id
+        # h.history_neural_network_id = self.history_neural_network_id
         h.date = self.date
         if self.history_neutral_network is not None:
             h.history_neutral_network = HistoryNeutralNetworkDTO(**self.history_neutral_network).getHistoryNeutralNetwork()
@@ -37,6 +37,5 @@ class HealingHistoryDTO(object):
         dto.history_neural_network_id = self.history_neural_network_id
         if self.history_neutral_network is not None:
             dto.history_neutral_network = HistoryNeutralNetworkDTO(**self.history_neutral_network.__dict__).getDto().__dict__
-        print(dto)
         return dto
 

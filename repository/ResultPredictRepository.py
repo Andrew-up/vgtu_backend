@@ -18,7 +18,13 @@ class ResultPredictRepository(AbstractRepository):
         pass
 
     def add(self, data: ResultPredict):
-        pass
+        self.session.connection()
+        self.session.add(data)
+        self.session.commit()
+        self.session.refresh(data)
+        self.session.close()
+        return 'ok'
+
 
     def find_all(self) -> list[ResultPredict]:
         self.session.connection()

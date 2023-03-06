@@ -82,7 +82,6 @@ def add_new_patient():
     dto = PatientDTO(**data1)
     s_service = PatientService(1)
     res = s_service.add(dto)
-    print(res.address)
     json_string = json.dumps(res.__dict__, ensure_ascii=False)
     return Response(json_string, 200)
 

@@ -38,7 +38,7 @@ class ResultPredict(Base):
     id_category = Column(Integer, primary_key=True)
     name_category_eng = Column(String(50))
     name_category_ru = Column(String(50))
-    history_neural_network = relationship("HistoryNeuralNetwork", back_populates="result_predict", uselist=False)
+    annotations = relationship("Annotations", back_populates="result_predict")
     color = Column(String(50))
 
 #История распознавания нейронной сети
@@ -49,12 +49,7 @@ class HistoryNeuralNetwork(Base):
     photo_original = Column(BLOB)
     photo_predict = Column(BLOB)
     photo_predict_edit_doctor = Column(BLOB)
-    polygon_mask = Column(BLOB)
-    result_predict_id = Column(Integer, ForeignKey(ResultPredict.id_category))
-    result_predict = relationship(ResultPredict, back_populates="history_neural_network", uselist=False)
-    # healing_history_id = Column(Integer, ForeignKey("HealingHistory"."id_healing_history"))
     healing_history = relationship("HealingHistory", back_populates="history_neutral_network", uselist=False)
-    area_wound = Column(Integer)
     annotations: list["Annotations"] = relationship("Annotations", back_populates="history_nn")
 
 #История лечения пациента
@@ -78,7 +73,8 @@ class Annotations(Base):
     segmentation = Column(String(500))
     history_nn_id = Column(Integer, ForeignKey(HistoryNeuralNetwork.id_history_neural_network))
     history_nn = relationship("HistoryNeuralNetwork", back_populates="annotations", uselist=False)
-    category_id = Column(Integer)
+    category_id = Column(Integer, ForeignKey(ResultPredict.id_category))
+    result_predict = relationship(ResultPredict, back_populates="annotations", uselist=False)
 
 
 # Профиль доктора

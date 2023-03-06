@@ -1,25 +1,27 @@
+from dto.ResultPredictDTO import ResultPredictDTO
 from model.model import Annotations
 class AnnotationsDTO(object):
     def __init__(self, **entries):
-        self.id_annotations = None
-        self.area = None
-        self.bbox = None
-        self.segmentation = None
-        self.history_nn_id = None
-        self.category_id = None
+        self.id_annotations: int = int()
+        self.area: float = float()
+        self.bbox: str = str()
+        self.segmentation: str = str()
+        self.history_nn_id: int = int()
+        self.category_id: int = int()
+        self.result_predict = None
         self.__dict__.update(entries)
-        print('=========================')
-        print(self.id_annotations)
+
 
 
     def getAnnotation(self):
         a = Annotations()
-        a.id_annotations = self.id_annotations
+        # a.id_annotations = self.id_annotations
         a.area = self.area
         a.bbox = self.bbox
         a.segmentation = self.segmentation
-        a.history_nn_id = self.history_nn_id
-        a.category_id = self.category_id
+        # a.history_nn_id = self.history_nn_id
+        if self.category_id is not None:
+            a.category_id = self.category_id
         return a
 
     def getDto(self):
@@ -29,5 +31,7 @@ class AnnotationsDTO(object):
         dto.segmentation = self.segmentation
         dto.history_nn_id = self.history_nn_id
         dto.category_id = self.category_id
+        if self.result_predict is not None:
+            dto.result_predict = ResultPredictDTO(**self.result_predict.__dict__).getDto().__dict__
         return dto
 

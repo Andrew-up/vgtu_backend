@@ -79,10 +79,9 @@ class CocoJsonFormatClass(object):
         annotation.iscrowd = 0
         annotation.image_id = img.id
         annotation.category_id = history_nn.result_predict_id
-        str = history_nn.polygon_mask.decode('utf-8')
-        res = base64.b64decode(literal_eval(str)).decode('utf-8')
-        annotation.segmentation = literal_eval(res)
-        annotation.area = history_nn.area_wound
+        # str = history_nn.polygon_mask.decode('utf-8')
+        # res = base64.b64decode(literal_eval(str)).decode('utf-8')
+        # annotation.segmentation = literal_eval(res)
 
         b = b'WwogICAgICAgICAgICAxMjgsCiAgICAgICAgICAgIDczLjU3NDgwMzE0OTYwNjMsCiAgICAgICAgICAgIDE4My40MzMwNzA4NjYxNDE3NSwKICAgICAgICAgICAgMjAwLjU2NjkyOTEzMzg1ODI1CiAgICAgICAgIF0='
         ff = base64.b64decode(b).decode('utf-8')
@@ -92,7 +91,7 @@ class CocoJsonFormatClass(object):
         # print(type(s))
         self.annotations.append(annotation)
 
-    def addCategories(self, catss: ResultPredictDTO):
+    def addCategories(self, catss: ResultPredictDTO.__dict__):
         cat = Categories()
         cat.id = catss['id_category']
         cat.name = catss['name_category_eng']

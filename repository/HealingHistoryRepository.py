@@ -17,18 +17,17 @@ class HealingHistoryRepository(AbstractRepository):
 
     def get(self, id_history) -> HealingHistory:
         self.session.connection()
-        history: HealingHistory = self.session.query(HealingHistory).filter(
-            HealingHistory.id_healing_history == id_history) \
+        history: HealingHistory = self.session.query(HealingHistory) \
             .join(HistoryNeuralNetwork, isouter=True) \
-            .join(ResultPredict, isouter=True) \
             .join(Annotations, isouter=True)\
+            .join(ResultPredict, isouter=True)\
+            .filter(HealingHistory.id_healing_history == id_history)\
             .filter(Annotations.history_nn_id == HistoryNeuralNetwork.id_history_neural_network)\
+            .filter(ResultPredict.id_category == Annotations.category_id)\
             .options(
             joinedload(HealingHistory.history_neutral_network)
-            .subqueryload(HistoryNeuralNetwork.annotations),
-            joinedload(HealingHistory.history_neutral_network)
-            .subqueryload(HistoryNeuralNetwork.result_predict))\
-            .first()
+            .subqueryload(HistoryNeuralNetwork.annotations)
+            .joinedload(Annotations.result_predict)).first()
         self.session.close()
         return history
 
@@ -43,11 +42,18 @@ class HealingHistoryRepository(AbstractRepository):
 
     def getAllHistoryByPatientId(self, id_patient) -> list[HealingHistory]:
         self.session.connection()
-        all_history_patient: list[HealingHistory] = self.session.query(HealingHistory).filter(HealingHistory.patient_id == id_patient)\
-            .join(HistoryNeuralNetwork, isouter=True)\
+        all_history_patient: list[HealingHistory] = self.session.query(HealingHistory)\
+            .join(HistoryNeuralNetwork, isouter=True) \
+            .join(Annotations, isouter=True)\
             .join(ResultPredict, isouter=True)\
-            .options(joinedload(HealingHistory.history_neutral_network).subqueryload(HistoryNeuralNetwork.result_predict)).all()
+            .filter(HealingHistory.patient_id == id_patient)\
+            .filter(Annotations.history_nn_id == HistoryNeuralNetwork.id_history_neural_network) \
+            .options(
+            joinedload(HealingHistory.history_neutral_network)
+            .subqueryload(HistoryNeuralNetwork.annotations)
+            .joinedload(Annotations.result_predict)).all()
         self.session.close()
+        print(all_history_patient[-1].history_neutral_network.annotations[-1].bbox)
         return all_history_patient
 
 
