@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, BLOB, ForeignKey
+from sqlalchemy import Column, Integer, String, BLOB, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from definitions import DATABASE_DIR
 from sqlalchemy import create_engine
@@ -55,6 +55,7 @@ class HistoryNeuralNetwork(Base):
     # healing_history_id = Column(Integer, ForeignKey("HealingHistory"."id_healing_history"))
     healing_history = relationship("HealingHistory", back_populates="history_neutral_network", uselist=False)
     area_wound = Column(Integer)
+    annotations: list["Annotations"] = relationship("Annotations", back_populates="history_nn")
 
 #История лечения пациента
 class HealingHistory(Base):
@@ -67,6 +68,17 @@ class HealingHistory(Base):
     doctor = relationship("Doctor", back_populates="healing_history", uselist=False)
     comment = Column(String(500))
     date = Column(String(100))
+
+
+class Annotations(Base):
+    __tablename__ = 'Annotations_image'
+    id_annotations = Column(Integer, primary_key=True)
+    area = Column(Float(500))
+    bbox = Column(String(500))
+    segmentation = Column(String(500))
+    history_nn_id = Column(Integer, ForeignKey(HistoryNeuralNetwork.id_history_neural_network))
+    history_nn = relationship("HistoryNeuralNetwork", back_populates="annotations", uselist=False)
+    category_id = Column(Integer)
 
 
 # Профиль доктора

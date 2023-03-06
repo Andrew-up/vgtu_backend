@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, joinedload, subqueryload
 from sqlalchemy import func
 
 from definitions import DATABASE_DIR
-from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork
+from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations
 from repository.abstractRepository import AbstractRepository
 
 engine = create_engine(f"sqlite:///{DATABASE_DIR}", echo=True)
@@ -21,9 +21,14 @@ class HealingHistoryRepository(AbstractRepository):
             HealingHistory.id_healing_history == id_history) \
             .join(HistoryNeuralNetwork, isouter=True) \
             .join(ResultPredict, isouter=True) \
+            .join(Annotations, isouter=True)\
+            .filter(Annotations.history_nn_id == HistoryNeuralNetwork.id_history_neural_network)\
             .options(
-            joinedload(HealingHistory.history_neutral_network).subqueryload(HistoryNeuralNetwork.result_predict)).first()
-        # get: HealingHistory = self.session.query(HealingHistory).get(id_history)
+            joinedload(HealingHistory.history_neutral_network)
+            .subqueryload(HistoryNeuralNetwork.annotations),
+            joinedload(HealingHistory.history_neutral_network)
+            .subqueryload(HistoryNeuralNetwork.result_predict))\
+            .first()
         self.session.close()
         return history
 
@@ -56,9 +61,15 @@ class HealingHistoryRepository(AbstractRepository):
 
 if __name__ == '__main__':
     r = HealingHistoryRepository(1)
-    for i in r.getImageDataset():
+    res = r.get(1)
+    # print(res)
+    # ann = res.history_neutral_network.annotations
+    # for i in ann:
+    #     print(i.bbox)
+
+    # for i in r.getImageDataset():
         # print(i.id_history_neural_network)
-        print(i.result_predict)
+        # print(i.result_predict)
     # print(r.hfhjgsdfjsdgf())
     # r.getAllHistoryByPatientId(5)
     # for i in r.getAllHistoryByPatientId(5):

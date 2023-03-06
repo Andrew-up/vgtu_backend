@@ -37,5 +37,6 @@ class HealingHistoryDTO(object):
         dto.history_neural_network_id = self.history_neural_network_id
         if self.history_neutral_network is not None:
             dto.history_neutral_network = HistoryNeutralNetworkDTO(**self.history_neutral_network.__dict__).getDto().__dict__
+        print(dto)
         return dto
 
