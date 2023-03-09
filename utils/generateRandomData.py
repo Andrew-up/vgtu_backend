@@ -67,4 +67,4 @@ def gen():
 
 if __name__ == '__main__':
     add_result_predict_table()
-    gen()
+    # gen()

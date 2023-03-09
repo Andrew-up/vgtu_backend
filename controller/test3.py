@@ -8,7 +8,7 @@ from controller import app, API_ROOT
 from definitions import RELEASE_DIR, VERSION
 from dto.patientDTO import PatientDTO
 from service.patientService import PatientService
-
+from utils.GenerateCocoJsonFromDataBase import GenerateJsonFileFromDB
 # logger2 = logging.basicConfig(level=logging.WARNING)
 logger2 = logging.getLogger('test1')
 logger2.setLevel(level=logging.DEBUG)
@@ -29,6 +29,11 @@ testssss = {
     'ip_client': None,
     'url': None
 }
+
+@app.route(API_ROOT + "/ann_json/")
+def get_ann_json():
+    p = GenerateJsonFileFromDB()
+    return p.generateJsonFile()
 
 
 @app.route(API_ROOT + "/all/")

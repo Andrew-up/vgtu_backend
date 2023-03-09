@@ -9,19 +9,19 @@ class AnnotationsDTO(object):
         self.history_nn_id: int = int()
         self.category_id: int = int()
         self.result_predict = None
+        self.category = None
         self.__dict__.update(entries)
 
 
 
     def getAnnotation(self):
         a = Annotations()
-        # a.id_annotations = self.id_annotations
-        a.area = self.area
-        a.bbox = self.bbox
-        a.segmentation = self.segmentation
-        # a.history_nn_id = self.history_nn_id
+        a.area = float(self.area)
+        a.bbox = str(self.bbox)
+        a.segmentation = str(self.segmentation)
         if self.category_id is not None:
             a.category_id = self.category_id
+        print('111111111111111111')
         return a
 
     def getDto(self):
@@ -31,7 +31,8 @@ class AnnotationsDTO(object):
         dto.segmentation = self.segmentation
         dto.history_nn_id = self.history_nn_id
         dto.category_id = self.category_id
+        dto.area = self.area
         if self.result_predict is not None:
-            dto.result_predict = ResultPredictDTO(**self.result_predict.__dict__).getDto().__dict__
+            dto.category = ResultPredictDTO(**self.result_predict.__dict__).getDto().__dict__
         return dto
 

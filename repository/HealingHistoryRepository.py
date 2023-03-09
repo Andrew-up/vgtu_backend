@@ -53,21 +53,21 @@ class HealingHistoryRepository(AbstractRepository):
             .subqueryload(HistoryNeuralNetwork.annotations)
             .joinedload(Annotations.result_predict)).all()
         self.session.close()
-        print(all_history_patient[-1].history_neutral_network.annotations[-1].bbox)
+        # print(all_history_patient[-1].history_neutral_network.annotations[-1].bbox)
         return all_history_patient
 
 
     def getImageDataset(self):
         self.session.connection()
         dataset = self.session.query(HistoryNeuralNetwork).filter(HistoryNeuralNetwork.photo_predict_edit_doctor != None)\
-            .join(ResultPredict, isouter=True).options(joinedload(HistoryNeuralNetwork.result_predict)).all()
+            .join(Annotations, isouter=True).options(joinedload(HistoryNeuralNetwork.annotations)).all()
         self.session.close()
         return dataset
 
 
 if __name__ == '__main__':
     r = HealingHistoryRepository(1)
-    res = r.get(1)
+    res = r.getImageDataset()
     # print(res)
     # ann = res.history_neutral_network.annotations
     # for i in ann:

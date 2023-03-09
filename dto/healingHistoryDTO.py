@@ -18,11 +18,9 @@ class HealingHistoryDTO(object):
 
     def getHealingHistory(self):
         h = HealingHistory()
-        # h.id_healing_history = self.id_healing_history
         h.patient_id = self.patient_id
         h.comment = self.comment
         h.doctor = self.doctor
-        # h.history_neural_network_id = self.history_neural_network_id
         h.date = self.date
         if self.history_neutral_network is not None:
             h.history_neutral_network = HistoryNeutralNetworkDTO(**self.history_neutral_network).getHistoryNeutralNetwork()
