@@ -91,6 +91,21 @@ class Doctor(Base):
     healing_history = relationship(HealingHistory, back_populates="doctor")
 
 
+class ModelUnet(Base):
+    __tablename__ = 'Model_unet'
+    id = Column(Integer, primary_key=True)
+    version = Column(String(50))
+    accuracy = Column(Float(50))
+    date_train = Column(String(100))
+    quality_dataset = Column(Integer)
+    quality_train_dataset = Column(Integer)
+    quality_valid_dataset = Column(Integer)
+    epochs = Column(Integer)
+    time_train = Column(String(50))
+    num_classes = Column(Integer)
+    input_size = Column(String(50))
+    output_size = Column(String(50))
+
 
 if __name__ == '__main__':
     engine = create_engine(f"sqlite:///{DATABASE_DIR}", echo=True)

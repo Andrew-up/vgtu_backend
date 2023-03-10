@@ -5,4 +5,4 @@ DATABASE_DIR = os.path.join(ROOT_DIR, "data_base/db.db")
 RELEASE_DIR = os.path.join(ROOT_DIR, "Release")
 
 
-VERSION = "1.0.8"
+VERSION = "1.1.0"
