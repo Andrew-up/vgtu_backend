@@ -100,11 +100,13 @@ class ModelUnet(Base):
     quality_dataset = Column(Integer)
     quality_train_dataset = Column(Integer)
     quality_valid_dataset = Column(Integer)
-    epochs = Column(Integer)
+    current_epochs = Column(Integer)
+    total_epochs = Column(Integer)
     time_train = Column(String(50))
     num_classes = Column(Integer)
     input_size = Column(String(50))
     output_size = Column(String(50))
+    status = Column(String(50))
 
 
 if __name__ == '__main__':

@@ -13,4 +13,5 @@ def create_app():
     import controller.test3
     import controller.healing_hostory_controller
     import controller.result_predict_controller
+    import controller.train_model_controller
     return app
