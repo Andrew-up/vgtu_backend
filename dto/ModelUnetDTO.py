@@ -9,7 +9,8 @@ class ModelUnetDTO(object):
         self.quality_dataset = None
         self.quality_train_dataset = None
         self.quality_valid_dataset = None
-        self.epochs = None
+        self.current_epochs = None
+        self.total_epochs = None
         self.time_train = None
         self.num_classes = None
         self.input_size = None
@@ -26,7 +27,8 @@ class ModelUnetDTO(object):
         dto.quality_dataset = self.quality_dataset
         dto.quality_train_dataset = self.quality_train_dataset
         dto.quality_valid_dataset = self.quality_valid_dataset
-        dto.epochs = self.epochs
+        dto.current_epochs = self.current_epochs
+        dto.total_epochs = self.total_epochs
         dto.time_train = self.time_train
         dto.num_classes = self.num_classes
         dto.input_size = self.input_size
@@ -43,7 +45,8 @@ class ModelUnetDTO(object):
         model_unet.quality_dataset = self.quality_dataset
         model_unet.quality_train_dataset = self.quality_train_dataset
         model_unet.quality_valid_dataset = self.quality_valid_dataset
-        model_unet.epochs = self.epochs
+        model_unet.current_epochs = self.current_epochs
+        model_unet.total_epochs = self.total_epochs
         model_unet.time_train = self.time_train
         model_unet.num_classes = self.num_classes
         model_unet.input_size = self.input_size

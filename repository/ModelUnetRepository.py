@@ -31,8 +31,14 @@ class ModelUnetRepository(AbstractRepository):
         history: ModelUnet = self.session.query(ModelUnet).get(new_history.id)
 
         # Обновление данных
+        if new_history:
+            if new_history.current_epochs is not None:
+                history.current_epochs = new_history.current_epochs
+            if new_history.total_epochs is not None:
+                history.total_epochs = new_history.total_epochs
+            if new_history.status:
+                history.status = new_history.status
 
-        history.status = new_history.status
         # ------------
 
         self.session.add(history)
