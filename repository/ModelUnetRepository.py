@@ -38,7 +38,22 @@ class ModelUnetRepository(AbstractRepository):
                 history.total_epochs = new_history.total_epochs
             if new_history.status:
                 history.status = new_history.status
-
+            if new_history.date_train is not None:
+                history.date_train = new_history.date_train
+            if new_history.quality_dataset is not None:
+                history.quality_dataset = new_history.quality_dataset
+            if new_history.quality_valid_dataset is not None:
+                history.quality_valid_dataset = new_history.quality_valid_dataset
+            if new_history.quality_train_dataset is not None:
+                history.quality_train_dataset = new_history.quality_train_dataset
+            if new_history.num_classes is not None:
+                history.num_classes = new_history.num_classes
+            if new_history.time_train is not None:
+                history.time_train = new_history.time_train
+            if new_history.output_size is not None:
+                history.output_size = new_history.output_size
+            if new_history.input_size is not None:
+                history.input_size = new_history.input_size
         # ------------
 
         self.session.add(history)

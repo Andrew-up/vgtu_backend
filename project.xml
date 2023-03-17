@@ -5,7 +5,7 @@
         <path_ann_file>data/ann/</path_ann_file>
         <path_dataset_image>data/image/</path_dataset_image>
         <name_script>main.py</name_script>
-        <model_path>model_cnn/</model_path>
+        <model_path>model/</model_path>
         <model_name>model.h5</model_name>
     </train_model>
 </root>

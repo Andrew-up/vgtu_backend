@@ -5,6 +5,7 @@ class ModelUnetDTO(object):
         self.id = None
         self.version = None
         self.accuracy = None
+        self.name_file = None
         self.date_train = None
         self.quality_dataset = None
         self.quality_train_dataset = None
@@ -22,6 +23,7 @@ class ModelUnetDTO(object):
         dto = ModelUnetDTO()
         dto.id = self.id
         dto.version = self.version
+        dto.name_file = self.name_file
         dto.accuracy = self.accuracy
         dto.date_train = self.date_train
         dto.quality_dataset = self.quality_dataset
@@ -40,6 +42,7 @@ class ModelUnetDTO(object):
         model_unet = ModelUnet()
         model_unet.id = self.id
         model_unet.version = self.version
+        model_unet.name_file = self.name_file
         model_unet.accuracy = self.accuracy
         model_unet.date_train = self.date_train
         model_unet.quality_dataset = self.quality_dataset

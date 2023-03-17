@@ -95,6 +95,7 @@ class ModelUnet(Base):
     __tablename__ = 'Model_unet'
     id = Column(Integer, primary_key=True)
     version = Column(String(50))
+    name_file = Column(String(50))
     accuracy = Column(Float(50))
     date_train = Column(String(100))
     quality_dataset = Column(Integer)
