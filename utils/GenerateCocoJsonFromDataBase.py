@@ -73,7 +73,7 @@ class CocoJsonFormatClass(object):
         for i in history_nn.annotations:
             annotation = Annotations()
             annotation.bbox = literal_eval(i.bbox)
-            annotation.segmentation = literal_eval(i.segmentation)
+            annotation.segmentation = [literal_eval(i.segmentation)]
             annotation.iscrowd = 0
             annotation.image_id = img.id
             annotation.area = i.area
@@ -81,7 +81,7 @@ class CocoJsonFormatClass(object):
             if self.annotations:
                 annotation.id = self.annotations[-1].id + 1
             else:
-                annotation.id = 1
+                annotation.id = 0
             self.annotations.append(annotation)
 
     def addCategories(self, catss: ResultPredictDTO.__dict__):

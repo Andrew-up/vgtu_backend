@@ -102,13 +102,6 @@ def train_model():
 @app.route(API_ROOT + "/ann_json/")
 def get_ann_json():
     p = GenerateJsonFileFromDB()
-    r = ModelUnetRepository(1)
-    data = r.get_last_history_train()
-    if data:
-        if data.status == 'train':
-            return 'модель уже обучается, подождите'
-    myclass = MyClass()
-    myclass.start()
     return p.generateJsonFile()
 
 
