@@ -5,20 +5,21 @@ import os.path
 from ast import literal_eval
 from io import BytesIO
 from pathlib import Path
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 from service.HealingHistoryService import HealingHistoryService
 from service.ResultPredictService import ResultPredictService
 from definitions import ROOT_DIR
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageDraw
 from model.model import HistoryNeuralNetwork
 from dto.ResultPredictDTO import ResultPredictDTO
 import shutil
 from utils.read_xml_file import ReadXmlProject
 import random
+from shapely.ops import transform
+from shapely import affinity, geometry
+from shapely.geometry import Polygon
 
 info = {
     "description": "my-project-name"
@@ -29,7 +30,6 @@ class Categories(object):
     def __init__(self):
         self.id = 0
         self.name = ''
-
 
 class Annotations(object):
     def __init__(self):
@@ -62,32 +62,96 @@ class ImageObj(object):
 
         return img, mask
 
+
+
     def randomflip(self, image, mask):
         rand = random.getrandbits(1)
         rand = True
-        image = np.array(image)
-        # new_segmentation = []
-        # new_bbox_list = []
-        # print(mask.annotations[0].segmentation)
+        # print(type(image))
         if rand:
             # image = np.flip(image)
-            print(len(mask.annotations))
+            # print(len(mask.annotations))
+            fig, axes = plt.subplots(2, 2)
+            # print(image.size)
+            train_mask = np.zeros((image.size[1], image.size[0], 3), dtype=np.uint8)
+            train_mask_flip = np.zeros((image.size[1], image.size[0], 3), dtype=np.uint8)
+
             for index, i in enumerate(mask.annotations):
-                train_mask = np.zeros((image.shape[0], image.shape[1], 1), dtype=np.uint8)
-                print(train_mask.shape)
-                print(i.segmentation)
+                img2 = Image.fromarray(train_mask)
+                ImageDraw.Draw(img2).polygon(ast.literal_eval(i.segmentation), fill="#ffffff", outline='white')
+                train_mask = np.array(img2)
+                listtt = ast.literal_eval(i.segmentation)
+                x = []
+                y = []
+
+                for index, element in enumerate(listtt):
+                    if index % 2:
+                        y.append(element)
+                    else:
+                        x.append(element)
+
+                # print(len(listtt))
+                poly = Polygon(zip(x, y))
+                # print(i.segmentation)
+                new_segm = []
+                a = affinity.rotate(poly, 180, 'center')
+                for x, y in a.exterior.coords:
+                    new_segm.append(x)
+                    new_segm.append(y)
+                # print(new_segm)
+                # print(type(new_segm))
+                img = Image.fromarray(train_mask_flip)
+                ImageDraw.Draw(img).polygon(new_segm, fill="#ffffff", outline='white')
+                train_mask_flip = np.array(img)
+                print(f'index: {index}')
+                # mask.annotations[index].segmentation = ''
+
+
+            axes[0, 0].imshow(train_mask)
+            axes[0, 0].set_title('original mask')
+            axes[0, 0].axis('off')
+
+            axes[0, 1].imshow(train_mask_flip)
+            axes[0, 1].set_title('flip mask')
+            axes[0, 1].axis('off')
+
+            axes[1, 0].imshow(np.array(image.copy()))
+            axes[1, 0].set_title('original image')
+            axes[1, 0].axis('off')
+
+            axes[1, 1].imshow(np.array(image.copy()))
+            axes[1, 1].set_title('flip image')
+            axes[1, 1].axis('off')
+
+            plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.3)
+
+            plt.show()
+
+            # print('1')
+            # return 0
+
+
+
+
+
+                # new_mask = np.array(img)
+                # train_mask = np.maximum(new_mask, train_mask)
+
+                # plt.imshow(img)
+                # plt.show()
+
                 # img = rasterio.features.rasterize([poly], out_shape=(60, 50))
                 # new_mask = np.zeros(image.shape)
                 # resize = np.maximum(new_mask, )
                 # print(new_mask.shape)
-                pass
+            pass
                 # new_arr = str(np.rot90(np.array(ast.literal_eval(i.segmentation))).astype(float).tolist())
                 # new_bbox = str(np.flip(np.array(ast.literal_eval(i.bbox))).astype(str).tolist())
                 # mask.annotations[index].segmentation = new_arr
                 # mask.annotations[index].bbox = new_bbox
         # print(mask.annotations[0].segmentation)
         # mask.annotations = new_segmentation
-        return Image.fromarray(image), mask
+        return image, mask
 
 
 class CocoJsonFormatClass(object):
@@ -183,7 +247,8 @@ class GenerateJsonFileFromDB(object):
                 # print(i.annotations)
                 # pass
                 # print(i.annotations[0].segmentation)
-                new_image, mask = self.coco_class.addImage(string_base64=i.photo_original, image_path=self.image_folder_path, ann=i)
+                new_image, mask = self.coco_class.addImage(string_base64=i.photo_original,
+                                                           image_path=self.image_folder_path, ann=i)
                 self.coco_class.addAnnotation(img=new_image, history_nn=mask)
                 # print(mask.annotations[0].segmentation)
                 # return 0
@@ -210,11 +275,15 @@ class GenerateJsonFileFromDB(object):
 
     def copy_datasetToModelTraining(self):
         dataset_folder = os.path.join(ROOT_DIR, 'dataset')
+
         if os.path.exists(dataset_folder):
             to = os.path.join(ReadXmlProject().path_train_model, 'dataset')
+            print(to)
             if os.path.exists(to):
                 shutil.rmtree(to)
-            shutil.copytree(dataset_folder, to)
+                shutil.copytree(dataset_folder, to)
+            else:
+                print('Проверьте xml file, path_train_model')
 
 
 if __name__ == '__main__':

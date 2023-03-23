@@ -60,7 +60,8 @@ class HealingHistoryRepository(AbstractRepository):
     def getImageDataset(self):
         self.session.connection()
         dataset = self.session.query(HistoryNeuralNetwork).filter(HistoryNeuralNetwork.photo_predict_edit_doctor != None)\
-            .join(Annotations, isouter=True).options(joinedload(HistoryNeuralNetwork.annotations)).all()
+            .join(Annotations, isouter=True).options(joinedload(HistoryNeuralNetwork.annotations))\
+            .order_by(HistoryNeuralNetwork.id_history_neural_network.desc()).all()
         self.session.close()
         return dataset
 
