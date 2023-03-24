@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from definitions import DATABASE_DIR
-from model.model import ResultPredict
+from model.model import ResultPredict, Annotations
 from repository.abstractRepository import AbstractRepository
 
 engine = create_engine(f"sqlite:///{DATABASE_DIR}", echo=True)
@@ -28,7 +28,8 @@ class ResultPredictRepository(AbstractRepository):
 
     def find_all(self) -> list[ResultPredict]:
         self.session.connection()
-        all = self.session.query(ResultPredict).all()
+        all = self.session.query(ResultPredict).order_by(ResultPredict.id_category).join(Annotations)\
+            .filter(ResultPredict.id_category == Annotations.category_id).all()
         self.session.close()
         return all
 
