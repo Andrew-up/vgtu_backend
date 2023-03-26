@@ -12,3 +12,8 @@ def getAllCategorical():
     s = ResultPredictService(1)
     res = s.getAll()
     return Response(json.dumps(res, ensure_ascii=False), status=200, headers={'Content-Type': 'application/json'})
+@app.route(API_ROOT + 'categorical/all_not_null/')
+def getAllCategoricalNotNull():
+    s = ResultPredictService(1)
+    res = s.getAllNotNull()
+    return Response(json.dumps(res, ensure_ascii=False), status=200, headers={'Content-Type': 'application/json'})

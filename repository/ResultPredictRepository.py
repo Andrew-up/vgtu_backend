@@ -28,14 +28,18 @@ class ResultPredictRepository(AbstractRepository):
 
     def find_all(self) -> list[ResultPredict]:
         self.session.connection()
-        all = self.session.query(ResultPredict).order_by(ResultPredict.id_category).join(Annotations)\
-            .filter(ResultPredict.id_category == Annotations.category_id).all()
+        all = self.session.query(ResultPredict).order_by(ResultPredict.id_category).all()
+        self.session.close()
+        return all
+    def find_all_not_null(self) -> list[ResultPredict]:
+        self.session.connection()
+        all = self.session.query(ResultPredict).order_by(ResultPredict.id_category).join(Annotations).filter(ResultPredict.id_category==Annotations.category_id).all()
         self.session.close()
         return all
 
 
 if __name__ == '__main__':
     p = ResultPredictRepository(1)
-    sss = p.find_all()
+    sss = p.find_all_not_null()
     for i in sss:
         print(i.name_category_ru)
