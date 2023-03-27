@@ -69,6 +69,16 @@ class ModelUnetRepository(AbstractRepository):
         self.session.close()
         return m
 
+    def get_history_by_version(self, version) -> ModelUnet:
+        m = self.session.query(ModelUnet).filter(ModelUnet.version==version).first()
+        return m
+
+    def all_history(self) -> list[ModelUnet]:
+        self.session.connection()
+        m = self.session.query(ModelUnet).order_by(ModelUnet.id.desc()).all()
+        self.session.close()
+        return m
+
 
 
 if __name__ == '__main__':

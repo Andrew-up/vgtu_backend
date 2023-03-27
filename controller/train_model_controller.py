@@ -38,15 +38,21 @@ def read_file_chunks(path):
 
 @app.route(API_ROOT + '/model_cnn/last_model/download/')
 def get_last_history_download():
+    version = request.args.get('version')
+    if not version:
+        return 'Укажите версию для загрузки'
     r = ModelUnetRepository(1)
-    data = r.get_last_history_train()
+    data = r.get_history_by_version(version)
     r = ReadXmlProject()
     if data:
         full_path = os.path.join(r.path_train_model+r.model_path, data.name_file)
         zip_name = f'{os.path.splitext(full_path)[0]}.zip'
+        stats = os.stat(zip_name)
+        print(stats.st_size)
         return Response(
             stream_with_context(read_file_chunks(zip_name)),
             headers={
+                'Content-Length': f'{stats.st_size}',
                 'Content-Disposition': f'attachment; filename={os.path.splitext(data.name_file)[0]}.zip'
             })
     return 'ok'
@@ -76,7 +82,7 @@ def train_model():
     dto = ModelUnetDTO()
     r = ModelUnetRepository(1)
     data = r.get_last_history_train()
-    if data is None or data.status == 'compleated':
+    if data is None or data.status == 'completed':
         m = ModelUnet()
         m.status = 'Начат процесс обучения'
         if data:
@@ -121,3 +127,17 @@ def add_history_model():
     repo.add(data)
     print(data.status)
     return Response('ok', 200)
+@app.route(API_ROOT + '/model_cnn/history/all/', methods=['GET'])
+def get_all_history_model_training():
+    r = ModelUnetRepository(1)
+    data = r.all_history()
+    data_list = []
+    xml = ReadXmlProject()
+    for i in data:
+        dto = ModelUnetDTO(**i.__dict__)
+        file_path = os.path.join(str(xml.path_train_model)+str(xml.model_path), str(dto.name_file))
+        if os.path.exists(file_path):
+            dto.download = True
+        data_list.append(dto.getDTO().__dict__)
+    return Response(json.dumps(data_list, ensure_ascii=False), status=200,
+                    headers={'Content-Type': 'application/json'})

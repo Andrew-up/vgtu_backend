@@ -17,6 +17,7 @@ class ModelUnetDTO(object):
         self.input_size = None
         self.output_size = None
         self.status = None
+        self.download = False
         self.__dict__.update(entries)
 
     def getDTO(self):
@@ -36,6 +37,7 @@ class ModelUnetDTO(object):
         dto.input_size = self.input_size
         dto.output_size = self.output_size
         dto.status = self.status
+        dto.download = self.download
         return dto
 
     def getModelUnet(self) -> ModelUnet:
