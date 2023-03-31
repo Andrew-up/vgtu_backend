@@ -134,7 +134,7 @@ class GenerateJsonFileFromDB(object):
         self.createFolder()
         self.printImageId()
         self.generateJsonFile()
-        self.copy_datasetToModelTraining()
+        # self.copy_datasetToModelTraining()
 
     def printFolders(self):
         print(self.dataset_folder_path)

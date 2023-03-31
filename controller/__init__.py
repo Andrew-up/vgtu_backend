@@ -9,6 +9,18 @@ app.wsgi_app = ProxyFix(
 )
 
 
+CHUNK_SIZE = 8192
+def read_file_chunks(path):
+    with open(path, 'rb') as fd:
+        while 1:
+            buf = fd.read(CHUNK_SIZE)
+            if buf:
+                yield buf
+            else:
+                break
+
+
+
 def create_app():
     import controller.test2
     import controller.test3

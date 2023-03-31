@@ -2,10 +2,10 @@ import json
 import logging
 import os
 
-from flask import request, Response
+from flask import request, Response, stream_with_context
 
 from Hgjhgjhgjk import MyClass
-from controller import app, API_ROOT
+from controller import app, API_ROOT, read_file_chunks
 from definitions import RELEASE_DIR, VERSION
 from dto.patientDTO import PatientDTO
 from service.patientService import PatientService
@@ -72,13 +72,14 @@ def check_version():
 
 @app.route('/api/app/update/download/')
 def download():
-    with open(os.path.join(RELEASE_DIR, 'test.zip'), 'rb') as f:
-        data = f.readlines()
-        return Response(data, headers={
-            'Content-Type': 'application/zip',
-            'Content-Disposition': 'attachment; filename=update.zip;'}
-                        )
-
+    zip_file_path = os.path.join(RELEASE_DIR, 'Release.zip')
+    stats = os.stat(zip_file_path)
+    return Response(
+        stream_with_context(read_file_chunks(zip_file_path)),
+        headers={
+            'Content-Length': f'{stats.st_size}',
+            'Content-Disposition': f'attachment; filename=Release.zip'
+        })
 
 @app.route(API_ROOT + "/add/", methods=['POST'])
 def add_new_patient():

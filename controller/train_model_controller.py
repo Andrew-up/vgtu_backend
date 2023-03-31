@@ -6,7 +6,7 @@ from io import BytesIO
 from flask import Response, request, send_file, stream_with_context
 
 from Hgjhgjhgjk import MyClass
-from controller import app, API_ROOT
+from controller import app, API_ROOT, read_file_chunks
 from dto.ModelUnetDTO import ModelUnetDTO, ModelUnet
 from repository.ModelUnetRepository import ModelUnetRepository
 from utils.GenerateCocoJsonFromDataBase import GenerateJsonFileFromDB
@@ -25,16 +25,6 @@ def get_last_history():
     return Response(json.dumps(void_history.__dict__, ensure_ascii=False), status=200,
                     headers={'Content-Type': 'application/json'})
 
-
-CHUNK_SIZE = 8192
-def read_file_chunks(path):
-    with open(path, 'rb') as fd:
-        while 1:
-            buf = fd.read(CHUNK_SIZE)
-            if buf:
-                yield buf
-            else:
-                break
 
 @app.route(API_ROOT + '/model_cnn/last_model/download/')
 def get_last_history_download():
@@ -83,6 +73,8 @@ def train_model():
     r = ModelUnetRepository(1)
     data = r.get_last_history_train()
     if data is None or data.status == 'completed':
+        p = GenerateJsonFileFromDB()
+        p.copy_datasetToModelTraining()
         m = ModelUnet()
         m.status = 'Начат процесс обучения'
         if data:
