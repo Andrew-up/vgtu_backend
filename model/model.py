@@ -4,8 +4,8 @@ from definitions import DATABASE_DIR
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
+print(DATABASE_DIR)
 Base = declarative_base()
-
 
 # TODO:
 # 1. подумать как хранить таблицы в разных файлах
@@ -110,6 +110,10 @@ class ModelUnet(Base):
     status = Column(String(50))
 
 
-if __name__ == '__main__':
+def init_db():
     engine = create_engine(f"sqlite:///{DATABASE_DIR}", echo=True)
     Base.metadata.create_all(engine)
+
+if __name__ == '__main__':
+    init_db()
+
