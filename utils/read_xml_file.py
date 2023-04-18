@@ -27,7 +27,7 @@ class ReadXmlProject(object):
             self._path_dataset_image = train_model.find('path_dataset_image').text
             self._name_script = train_model.find('name_script').text
             self._model_path = train_model.find('model_path').text
-            self._model_name = train_model.find('model_name').text
+            # self._model_name = train_model.find('model_name').text
         else:
             print(f'не найден {self.file_path}')
 

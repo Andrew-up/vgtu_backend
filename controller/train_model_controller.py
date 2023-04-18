@@ -80,7 +80,7 @@ def train_model():
         if data:
             m.version = data.version
         m.version = generate_new_version(m.version)
-        m.name_file = f'model_{m.version.replace(".","_")}.h5'
+        m.name_file = f'model_{m.version.replace(".","_")}.pth'
         new_data = r.add(m)
         dto = ModelUnetDTO(**new_data.__dict__).getDTO()
         ooooo = MyClass()

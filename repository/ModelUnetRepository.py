@@ -54,6 +54,8 @@ class ModelUnetRepository(AbstractRepository):
                 history.output_size = new_history.output_size
             if new_history.input_size is not None:
                 history.input_size = new_history.input_size
+            if new_history.name_file is not None:
+                history.name_file = new_history.name_file
         # ------------
 
         self.session.add(history)
