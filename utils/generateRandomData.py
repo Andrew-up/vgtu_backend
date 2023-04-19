@@ -1,7 +1,6 @@
 import sys
 import os, inspect
-from logging.config import dictConfig
-import numpy
+
 
 sys.path.insert(0, os.path.abspath('../'))
 
@@ -10,8 +9,8 @@ print(len(sys.path))
 
 import model
 
-# from repository.PatientRepository import PatientRepository
-# from repository.ResultPredictRepository import ResultPredictRepository
+from repository.PatientRepository import PatientRepository
+from repository.ResultPredictRepository import ResultPredictRepository
 import datetime
 
 
