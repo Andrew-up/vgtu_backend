@@ -2,7 +2,7 @@ import sys
 import os, inspect
 from logging.config import dictConfig
 import numpy
-from model import model
+import model
 
 # from repository.PatientRepository import PatientRepository
 # from repository.ResultPredictRepository import ResultPredictRepository
