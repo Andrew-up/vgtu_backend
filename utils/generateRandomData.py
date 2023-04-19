@@ -1,5 +1,10 @@
-import utils
+from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
+from repository.PatientRepository import PatientRepository
+from repository.ResultPredictRepository import ResultPredictRepository
 import datetime
+
+
+
 d = [{"id": 1, "cat_eng": 'cat1_1', "cat_ru": 'Асептическое 1 стадия', "color": (0, 0, 255)},
      {"id": 2, "cat_eng": 'cat1_2', "cat_ru": 'Асептическое 2 стадия', "color": (0, 0, 255)},
      {"id": 3, "cat_eng": 'cat1_3', "cat_ru": 'Асептическое 3 стадия', "color": (0, 0, 255)},
@@ -11,9 +16,9 @@ d = [{"id": 1, "cat_eng": 'cat1_1', "cat_ru": 'Асептическое 1 ста
      {"id": 9, "cat_eng": 'cat3_2', "cat_ru": 'Гнойное 3 стадия', "color": (255, 0, 0)}]
 
 def add_result_predict_table():
-    repo = utils.ResultPredictRepository(1)
+    repo = ResultPredictRepository(1)
     for i in d:
-        r = utils.ResultPredict()
+        r = ResultPredict()
         r.id_category = i['id']
         r.name_category_eng = i['cat_eng']
         r.name_category_ru = i['cat_ru']
@@ -21,8 +26,8 @@ def add_result_predict_table():
         repo.add(r)
 
 
-def gen_patient()->utils.Patient:
-    p = utils.Patient()
+def gen_patient()->Patient:
+    p = Patient()
     p.firstname = 'ivan'
     p.middlename = 'ivanayjvich'
     p.surname = 'ivanov'
@@ -30,20 +35,20 @@ def gen_patient()->utils.Patient:
     p.snils = '123-123-123'
     return p
 
-def gen_history()->utils.HealingHistory:
-    h = utils.HealingHistory()
+def gen_history()->HealingHistory:
+    h = HealingHistory()
     h.date = str(datetime.datetime.now())
     h.comment = 'test123'
     return h
 
-def gen_history_nn()->utils.HistoryNeuralNetwork:
-    h_nn = utils.HistoryNeuralNetwork()
+def gen_history_nn()->HistoryNeuralNetwork:
+    h_nn = HistoryNeuralNetwork()
     h_nn.photo_original = b'133'
     h_nn.photo_predict = b'dshfsdf'
     return h_nn
 
-def gen_ann()->utils.Annotations:
-    a = utils.Annotations()
+def gen_ann()->Annotations:
+    a = Annotations()
     a.bbox = '213,123,123,33'
     a.area = 1233.0
     a.segmentation = '[1,2,3,4,5,6,11,22,44]'
@@ -53,9 +58,9 @@ def gen_ann()->utils.Annotations:
 
 def gen():
     p = gen_patient()
-    h = utils.HealingHistory()
+    h = HealingHistory()
     h_nn = gen_history_nn()
-    repo = utils.PatientRepository(1)
+    repo = PatientRepository(1)
     a = gen_ann()
     h_nn.annotations.append(a)
     h.history_neutral_network = h_nn
