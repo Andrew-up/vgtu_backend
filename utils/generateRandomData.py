@@ -1,9 +1,9 @@
-
-
-from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
+from logging.config import dictConfig
+import numpy
 from repository.PatientRepository import PatientRepository
 from repository.ResultPredictRepository import ResultPredictRepository
 import datetime
+from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
 
 
 d = [{"id": 1, "cat_eng": 'cat1_1', "cat_ru": 'Асептическое 1 стадия', "color": (0, 0, 255)},
