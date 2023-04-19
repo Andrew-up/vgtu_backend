@@ -2,8 +2,8 @@ import sys
 import os, inspect
 from logging.config import dictConfig
 import numpy
-from definitions import ROOT_DIR
-sys.path.insert(0, ROOT_DIR)
+
+sys.path.insert(0, os.path.abspath('../'))
 
 print(sys.path)
 print(len(sys.path))
