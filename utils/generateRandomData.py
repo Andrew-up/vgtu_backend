@@ -1,5 +1,8 @@
+import sys
 from logging.config import dictConfig
 import numpy
+
+print(sys.path)
 from repository.PatientRepository import PatientRepository
 from repository.ResultPredictRepository import ResultPredictRepository
 import datetime
