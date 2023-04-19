@@ -4,7 +4,7 @@ from definitions import DATABASE_DIR
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-print(DATABASE_DIR)
+# print(DATABASE_DIR)
 Base = declarative_base()
 
 # TODO:

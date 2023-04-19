@@ -1,7 +1,5 @@
-from utils import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
-from utils import PatientRepository
-from utils import ResultPredictRepository
-import datetime
+from utils import *
+
 
 d = [{"id": 1, "cat_eng": 'cat1_1', "cat_ru": 'Асептическое 1 стадия', "color": (0, 0, 255)},
      {"id": 2, "cat_eng": 'cat1_2', "cat_ru": 'Асептическое 2 стадия', "color": (0, 0, 255)},
