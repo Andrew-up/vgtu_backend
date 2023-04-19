@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../model')
-sys.path.append('../repository')
-print(sys.path)
+
 
 from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
 from repository.PatientRepository import PatientRepository
