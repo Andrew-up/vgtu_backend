@@ -18,8 +18,7 @@ def read_file_chunks(path):
                 yield buf
             else:
                 break
-
-
+            
 
 def create_app():
     import controller.test2

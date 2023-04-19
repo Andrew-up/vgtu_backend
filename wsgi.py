@@ -17,6 +17,9 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
     serve(TransLogger(create_app(), setup_console_handler=True, logging_level=logging.DEBUG), host=HOST, port=port)
+
+
+
     # serve(create_app(), host=HOST, port=port)
 
     # serve(create_app(), host=HOST, port=port)
