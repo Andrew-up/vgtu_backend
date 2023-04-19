@@ -1,9 +1,4 @@
-from model.model import HealingHistory, ResultPredict, HistoryNeuralNetwork, Annotations, Patient
-from repository.PatientRepository import PatientRepository
-from repository.ResultPredictRepository import ResultPredictRepository
-import datetime
-
-
+from utils import *
 
 d = [{"id": 1, "cat_eng": 'cat1_1', "cat_ru": 'Асептическое 1 стадия', "color": (0, 0, 255)},
      {"id": 2, "cat_eng": 'cat1_2', "cat_ru": 'Асептическое 2 стадия', "color": (0, 0, 255)},
