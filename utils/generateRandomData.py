@@ -4,9 +4,11 @@ from logging.config import dictConfig
 import numpy
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT_DIR)
-import model
+
 print(sys.path)
 print(len(sys.path))
+
+import model
 
 
 
