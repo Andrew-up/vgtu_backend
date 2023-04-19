@@ -2,7 +2,7 @@ import sys
 import os, inspect
 from logging.config import dictConfig
 import numpy
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+from definitions import ROOT_DIR
 sys.path.insert(0, ROOT_DIR)
 
 print(sys.path)
