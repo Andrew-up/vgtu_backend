@@ -128,6 +128,7 @@ def get_all_history_model_training():
     for i in data:
         dto = ModelUnetDTO(**i.__dict__)
         file_path = os.path.join(str(xml.path_train_model)+str(xml.model_path), str(dto.name_file))
+        print(file_path)
         if os.path.exists(file_path):
             dto.download = True
         data_list.append(dto.getDTO().__dict__)
